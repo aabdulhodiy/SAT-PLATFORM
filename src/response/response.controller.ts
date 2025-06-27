@@ -1,40 +1,34 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+// src/response/response.controller.ts
+import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
 import { ResponseService } from './response.service';
 import { CreateResponseDto } from './dto/create-response.dto';
-import { UpdateResponseDto } from './dto/update-response.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth, ApiOperation, ApiBody } from '@nestjs/swagger';
 
-@ApiTags('Response')
+@ApiTags('Responses')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('response')
 export class ResponseController {
-  constructor(private readonly responseService: ResponseService) {}
+  constructor(private readonly service: ResponseService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create a new response' })
+  @ApiBody({ type: CreateResponseDto })
   create(@Body() dto: CreateResponseDto) {
-    return this.responseService.create(dto);
+    return this.service.create(dto);
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all responses' })
   findAll() {
-    return this.responseService.findAll();
+    return this.service.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.responseService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateResponseDto) {
-    return this.responseService.update(+id, dto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.responseService.remove(+id);
+  @ApiOperation({ summary: 'Get one response by ID' })
+  findOne(@Param('id') id: number) {
+    return this.service.findOne(+id);
   }
 }
 

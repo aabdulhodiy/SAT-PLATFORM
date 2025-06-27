@@ -1,35 +1,26 @@
+import { IsNumber, IsOptional, IsString, IsBoolean } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateResponseDto {
-  @ApiProperty({
-    example: 1,
-    description: 'Foydalanuvchining ID raqami',
-  })
+  @ApiProperty({ example: 1 })
+  @IsNumber()
   user_id: number;
 
-  @ApiProperty({
-    example: 5,
-    description: 'Savol ID raqami',
-  })
+  @ApiProperty({ example: 5 })
+  @IsNumber()
   question_id: number;
 
-  @ApiProperty({
-    example: 'A',
-    description: 'Foydalanuvchi tanlagan variant',
-  })
+  @ApiProperty({ example: 'B' })
+  @IsString()
   selected_option: string;
 
-  @ApiProperty({
-    example: 'Correct answer explanation text',
-    description: 'Foydalanuvchining yozgan javobi (agar kerak bo‘lsa)',
-    required: false,
-  })
+  @ApiProperty({ example: 'Pythagoras Theorem' })
+  @IsOptional()
+  @IsString()
   selected_answer?: string;
 
-  @ApiProperty({
-    example: true,
-    description: 'Javob to‘g‘rimi yoki yo‘qmi',
-  })
+  @ApiProperty({ example: true })
+  @IsBoolean()
   is_correct: boolean;
 }
 

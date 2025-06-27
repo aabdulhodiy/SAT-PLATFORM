@@ -36,7 +36,6 @@ export class User {
   @OneToMany(() => Certificate, (cert) => cert.user)
   certificates: Certificate[];
 
-
   @Column()
   password: string;
 
@@ -49,5 +48,4 @@ export class User {
   @UpdateDateColumn()
   updated_at: Date;
 }
-
 

@@ -1,54 +1,60 @@
 import {
   Controller,
-  Get,
   Post,
-  Body,
+  Get,
   Param,
+  Patch,
+  Body,
   Delete,
-  Put,
   UseGuards,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { PreferenceService } from './preference.service';
 import { CreatePreferenceDto } from './dto/create-preference.dto';
 import { UpdatePreferenceDto } from './dto/update-preference.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiBody,
+} from '@nestjs/swagger';
 
-@ApiTags('Preference')
+@ApiTags('Preferences')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('preferences')
 export class PreferenceController {
-  constructor(private readonly preferenceService: PreferenceService) {}
+  constructor(private readonly service: PreferenceService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create preference' })
+  @ApiBody({ type: CreatePreferenceDto })
   create(@Body() dto: CreatePreferenceDto) {
-    return this.preferenceService.create(dto);
+    return this.service.create(dto);
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all preferences' })
   findAll() {
-    return this.preferenceService.findAll();
+    return this.service.findAll();
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get preference by ID' })
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.preferenceService.findOne(id);
+  findOne(@Param('id') id: number) {
+    return this.service.findOne(+id);
   }
 
-  @Put(':id')
-  @ApiOperation({ summary: 'Update preference by ID' })
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdatePreferenceDto) {
-    return this.preferenceService.update(id, dto);
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update preference' })
+  @ApiBody({ type: UpdatePreferenceDto })
+  update(@Param('id') id: number, @Body() dto: UpdatePreferenceDto) {
+    return this.service.update(+id, dto);
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete preference by ID' })
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.preferenceService.remove(id);
+  @ApiOperation({ summary: 'Delete preference' })
+  remove(@Param('id') id: number) {
+    return this.service.remove(+id);
   }
 }

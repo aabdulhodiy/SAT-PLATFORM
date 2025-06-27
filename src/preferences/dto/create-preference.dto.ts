@@ -1,21 +1,30 @@
-import { IsNumber, IsPositive } from 'class-validator';
+// src/preferences/dto/create-preference.dto.ts
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePreferenceDto {
-  @ApiProperty({ example: 1, description: 'User ID (foydalanuvchi IDsi)' })
+  @ApiProperty({ example: 1 })
   @IsNumber()
-  @IsPositive()
   user_id: number;
 
-  @ApiProperty({ example: 2, description: 'Topic ID (mavzu IDsi)' })
+  @ApiProperty({ example: 2 })
   @IsNumber()
-  @IsPositive()
   topic_id: number;
 
-  @ApiProperty({ example: 0.85, description: 'Preference score (afzallik balli)' })
+  @ApiProperty({ example: 0.85, required: false })
+  @IsOptional()
   @IsNumber()
-  @IsPositive()
-  preference_score: number;
+  preference_score?: number;
+
+  @ApiProperty({ example: 'en', required: false })
+  @IsOptional()
+  @IsString()
+  language?: string;
+
+  @ApiProperty({ example: 'dark', required: false })
+  @IsOptional()
+  @IsString()
+  theme?: string;
 }
 
 
